@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/layout1}">
+
+<head>
+    <title>후기 작성</title>
+</head>
+
+<!-- 사용자 스크립트 추가 -->
+<th:block layout:fragment="script">
+    <script th:inline="javascript">
+        // 추가적인 자바스크립트 코드
+    </script>
+</th:block>
+
+<!-- 사용자 CSS 추가 -->
+<th:block layout:fragment="css">
+    <style>
+        /* 추가적인 CSS 스타일 */
+    </style>
+</th:block>
+
+<!-- 페이지 내용 -->
+<div layout:fragment="content">
+
+    <h2 class="mb-4">주문 후기 작성</h2>
+
+    <!-- 후기 작성 폼 -->
+    <form action="/review" method="post" th:object="${reviewForm}">
+        <!-- orderId를 hidden input으로 전달 -->
+        <input type="hidden" th:field="*{orderId}" th:value="${orderId}" />
+
+        <!-- 평가 입력 필드 -->
+        <div class="form-group">
+            <label for="rating">평가</label>
+            <input type="number" class="form-control" id="rating" th:field="*{rating}" />
+            <!-- 평가 필드의 validation 에러 처리 -->
+            <small class="form-text text-danger" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></small>
+        </div>
+
+        <!-- 댓글 입력 필드 -->
+        <div class="form-group">
+            <label for="comment">댓글</label>
+            <textarea class="form-control" id="comment" rows="5" th:field="*{comment}"></textarea>
+            <!-- 댓글 필드의 validation 에러 처리 -->
+            <small class="form-text text-danger" th:if="${#fields.hasErrors('comment')}" th:errors="*{comment}"></small>
+        </div>
+
+        <!-- 제출 버튼 -->
+        <button type="submit" class="btn btn-primary">작성 완료</button>
+    </form>
+
+</div>
+
+</html>
