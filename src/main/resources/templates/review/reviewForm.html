@@ -7,20 +7,6 @@
     <title>후기 작성</title>
 </head>
 
-<!-- 사용자 스크립트 추가 -->
-<th:block layout:fragment="script">
-    <script th:inline="javascript">
-        // 추가적인 자바스크립트 코드
-    </script>
-</th:block>
-
-<!-- 사용자 CSS 추가 -->
-<th:block layout:fragment="css">
-    <style>
-        /* 추가적인 CSS 스타일 */
-    </style>
-</th:block>
-
 <!-- 페이지 내용 -->
 <div layout:fragment="content">
 
@@ -28,13 +14,20 @@
 
     <!-- 후기 작성 폼 -->
     <form action="/review" method="post" th:object="${reviewForm}">
+
         <!-- orderId를 hidden input으로 전달 -->
         <input type="hidden" th:field="*{orderId}" th:value="${orderId}" />
 
         <!-- 평가 입력 필드 -->
         <div class="form-group">
-            <label for="rating">평가</label>
-            <input type="number" class="form-control" id="rating" th:field="*{rating}" />
+            <label>평가 (1~5)</label>
+            <div class="rating">
+                <input type="radio" id="star1" name="rating" value="1" th:field="*{rating}" th:checked="${reviewForm.rating == 1}"/><label for="star1" title="1 star">1</label>
+                <input type="radio" id="star2" name="rating" value="2" th:field="*{rating}" th:checked="${reviewForm.rating == 2}"/><label for="star2" title="2 stars">2</label>
+                <input type="radio" id="star3" name="rating" value="3" th:field="*{rating}" th:checked="${reviewForm.rating == 3}"/><label for="star3" title="3 stars">3</label>
+                <input type="radio" id="star4" name="rating" value="4" th:field="*{rating}" th:checked="${reviewForm.rating == 4}"/><label for="star4" title="4 stars">4</label>
+                <input type="radio" id="star5" name="rating" value="5" th:field="*{rating}" th:checked="${reviewForm.rating == 5}"/><label for="star5" title="5 stars">5</label>
+            </div>
             <!-- 평가 필드의 validation 에러 처리 -->
             <small class="form-text text-danger" th:if="${#fields.hasErrors('rating')}" th:errors="*{rating}"></small>
         </div>
