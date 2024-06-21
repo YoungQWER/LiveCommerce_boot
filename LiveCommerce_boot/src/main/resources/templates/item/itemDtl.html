@@ -4,91 +4,140 @@
       layout:decorate="~{layouts/layout1}">
 
 <head>
-    <!-- 추가적인 스타일 시트나 스크립트 추가 -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
 </head>
 
 <!-- 사용자 스크립트 추가 -->
 <th:block layout:fragment="script">
     <script th:inline="javascript">
-        $(document).ready(function(){
-
+        $(document).ready(function() {
             calculateTotalPrice();
 
-            $("#count").change( function(){
+            $("#count").change(function() {
                 calculateTotalPrice();
+            });
+
+            // 메시지 입력창에서 엔터 키 눌렀을 때 sendMessage 호출
+            $("#message").keypress(function(event) {
+                if (event.keyCode === 13) { // keyCode 13은 엔터 키를 의미합니다.
+                    sendMessage();
+                }
             });
         });
 
-        function calculateTotalPrice(){
+        function calculateTotalPrice() {
             var count = $("#count").val();
             var price = $("#price").val();
             var totalPrice = price * count;
             $("#totalPrice").html(totalPrice + '원');
         }
 
-        function order(){
+        function order() {
             var url = "/order";
             var paramData = {
-                itemId : $("#itemId").val(),
-                count : $("#count").val()
+                itemId: $("#itemId").val(),
+                count: $("#count").val()
             };
 
             var param = JSON.stringify(paramData);
 
             $.ajax({
-                url      : url,
-                type     : "POST",
-                contentType : "application/json",
-                data     : param,
-                dataType : "json",
-                cache   : false,
-                success  : function(result, status){
+                url: url,
+                type: "POST",
+                contentType: "application/json",
+                data: param,
+                dataType: "json",
+                cache: false,
+                success: function(result, status) {
                     alert("주문이 완료 되었습니다.");
-                    location.href='/';
+                    location.href = '/';
                 },
-                error : function(jqXHR, status, error){
-                    if(jqXHR.status == '401'){
+                error: function(jqXHR, status, error) {
+                    if (jqXHR.status == '401') {
                         alert('로그인 후 이용해주세요');
-                        location.href='/members/login';
-                    } else{
+                        location.href = '/members/login';
+                    } else {
                         alert(jqXHR.responseText);
                     }
                 }
             });
         }
 
-        function addCart(){
+        function addCart() {
             var url = "/cart";
             var paramData = {
-                itemId : $("#itemId").val(),
-                count : $("#count").val()
+                itemId: $("#itemId").val(),
+                count: $("#count").val()
             };
 
             var param = JSON.stringify(paramData);
 
             $.ajax({
-                url      : url,
-                type     : "POST",
-                contentType : "application/json",
-                data     : param,
-                dataType : "json",
-                cache   : false,
-                success  : function(result, status){
+                url: url,
+                type: "POST",
+                contentType: "application/json",
+                data: param,
+                dataType: "json",
+                cache: false,
+                success: function(result, status) {
                     alert("상품을 장바구니에 담았습니다.");
-                    location.href='/';
+                    location.href = '/';
                 },
-                error : function(jqXHR, status, error){
-                    if(jqXHR.status == '401'){
+                error: function(jqXHR, status, error) {
+                    if (jqXHR.status == '401') {
                         alert('로그인 후 이용해주세요');
-                        location.href='/members/login';
-                    } else{
+                        location.href = '/members/login';
+                    } else {
                         alert(jqXHR.responseText);
                     }
                 }
             });
         }
 
+        // 채팅
+        let stompClient = null;
+
+        function connect() {
+            const socket = new SockJS('/chat');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                console.log('Connected: ' + frame);
+                stompClient.subscribe('/topic/messages', function(message) {
+                    showMessage(JSON.parse(message.body));
+                });
+            });
+        }
+
+        function sendMessage() {
+            const message = document.getElementById('message').value;
+            const userId = document.getElementById('userId').value;  // 사용자 ID 입력 요소
+            stompClient.send("/app/sendMessage", {}, JSON.stringify({
+                'userId': userId,
+                'message': message
+            }));
+            // 메시지 전송 후 입력창 초기화
+            document.getElementById('message').value = '';
+        }
+
+        function showMessage(message) {
+            const messageArea = document.getElementById('messageArea');
+            const p = document.createElement('p');
+            p.style.wordWrap = 'break-word';
+            p.textContent = message.userId + ": " + message.message;
+            messageArea.appendChild(p);
+            // 스크롤을 맨 아래로 이동
+            messageArea.scrollTop = messageArea.scrollHeight;
+        }
+
+        window.onload = function() {
+            connect();
+        };
     </script>
+
 </th:block>
 
 <!-- 사용자 CSS 추가 -->
@@ -97,34 +146,85 @@
         .mgb-15 {
             margin-bottom: 15px;
         }
+
         .mgt-30 {
             margin-top: 30px;
         }
+
         .mgt-50 {
             margin-top: 50px;
         }
+
         .repImgDiv {
             margin-right: 15px;
             height: auto;
             width: 50%;
         }
+
         .repImg {
             width: 100%;
             height: 400px;
         }
+
         .wd50 {
             height: auto;
             width: 50%;
+        }
+
+        /* 채팅 스타일 */
+        .chat-container {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-left: 15px;
+            height: 400px;
+            overflow-y: auto;
+            width: 30%;
+        }
+
+        .chat-input {
+            margin-top: 10px;
+        }
+
+        .chat-input input {
+            width: calc(100% - 70px); /* 버튼 너비 고려하여 입력창 크기 조정 */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .chat-input button {
+            width: 70px; /* 입력창과 버튼 너비 조정 */
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .message-list {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        .message-list p {
+            margin: 5px 0;
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
         }
     </style>
 </th:block>
 
 <!-- content 영역 -->
-<div layout:fragment="content" style="margin-left: 25%; margin-right: 25%">
+<div layout:fragment="content" style="margin-left: 25%; margin-right: 25%;">
 
     <!-- 상품 정보 -->
     <input type="hidden" id="itemId" th:value="${item.id}">
-    <div class="d-flex">
+    <div class="d-flex" style="width: 70%;">
         <div class="repImgDiv">
             <img th:src="${item.itemImgDtoList[0].imgUrl}" class="rounded repImg" th:alt="${item.itemNm}">
         </div>
@@ -166,35 +266,44 @@
         </div>
     </div>
 
-    <!-- 상품 상세 설명 -->
-    <div class="jumbotron jumbotron-fluid mgt-30">
-        <div class="container">
-            <h4 class="display-5">상품 상세 설명</h4>
-            <hr class="my-4">
-            <p class="lead" th:text="${item.itemDetail}"></p>
+    <!-- 채팅 -->
+    <div class="chat-container">
+        <div class="message-list" id="messageArea"></div>
+        <div class="chat-input">
+            <input type="text" id="message" placeholder="메시지를 입력하세요" />
+            <input type="hidden" id="userId" th:value="${#authentication.name}" /> <!-- 시튜리티 사용 -->
+            <button onclick="sendMessage()">전송</button>
         </div>
     </div>
 
-    <!-- 리뷰 섹션 -->
-    <div th:if="${not #lists.isEmpty(reviews)}">
-        <h2>리뷰</h2>
-        <div th:each="review : ${reviews}" class="card mgt-30">
-            <div class="card-body">
-                <h5 class="card-title" th:text="${review.email}">Reviewer Email</h5>
-                <p class="card-text" th:text="'리뷰 평점 : ' + ${review.rating + '점'}">Rating</p>
-                <p class="card-text" th:text="'리뷰 : ' + ${review.comment}">Comment</p>
-            </div>
+
+<!-- 상품 상세 설명 -->
+<div class="jumbotron jumbotron-fluid mgt-30">
+    <div class="container">
+        <h4 class="display-5">상품 상세 설명</h4>
+        <hr class="my-4">
+        <p class="lead" th:text="${item.itemDetail}"></p>
+    </div>
+</div>
+
+<!-- 리뷰 -->
+<div th:if="${not #lists.isEmpty(reviews)}">
+    <h2>리뷰</h2>
+    <div th:each="review : ${reviews}" class="card mgt-30">
+        <div class="card-body">
+            <h5 class="card-title" th:text="${review.email}">Reviewer Email</h5>
+            <p class="card-text" th:text="'리뷰 평점 : ' + ${review.rating + '점'}">Rating</p>
+            <p class="card-text" th:text="'리뷰 : ' + ${review.comment}">Comment</p>
         </div>
     </div>
-    <div th:if="${#lists.isEmpty(reviews)}">
-        <h2>리뷰가 없습니다.</h2>
-    </div>
+</div>
+<div th:if="${#lists.isEmpty(reviews)}">
+    <h2>리뷰가 없습니다.</h2>
+</div>
 
-    <!-- 기타 이미지들 -->
-    <div th:each="itemImg : ${item.itemImgDtoList}" class="text-center">
-        <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}" class="rounded mgb-15" width="800">
-    </div>
-
+<!-- 기타 이미지들 -->
+<div th:each="itemImg : ${item.itemImgDtoList}" class="text-center">
+    <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}" class="rounded mgb-15" width="800">
 </div>
 
 </html>
