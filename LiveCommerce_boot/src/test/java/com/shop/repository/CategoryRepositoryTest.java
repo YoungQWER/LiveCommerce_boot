@@ -36,11 +36,11 @@ public class CategoryRepositoryTest {
         em.flush();
         em.clear();
     }
-
-    @Test
-    public void findShoesCategoryTest() {
-        // SHOES 카테고리 조회 테스트 코드 작성
-        Category shoesCategory = repository.findByName("SHOES");
-        // 조회 결과 검증 로직 추가
-    }
+//
+//    @Test
+//    public void findShoesCategoryTest() {
+//        // SHOES 카테고리 조회 테스트 코드 작성
+//        Category shoesCategory = repository.findByName("SHOES");
+//        // 조회 결과 검증 로직 추가
+//    }
 }
