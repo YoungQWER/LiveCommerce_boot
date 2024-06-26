@@ -5,6 +5,8 @@ import com.shop.repository.MemberRepository;
 import javassist.bytecode.DuplicateMemberException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -20,6 +22,10 @@ import javax.transaction.Transactional;
 public class MemberService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
+
+    public Member findByEmail(String sender) {
+        return memberRepository.findByEmail(sender);
+    }
 
     public Member savaMember(Member member) {
         validdateDuplicatemember(member);
@@ -51,7 +57,19 @@ public class MemberService implements UserDetailsService {
                 .build();
     }
 
-    public Member findByEmail(String email) {
+    //Security. 현재 인증된 사용자의 정보를 가져온다.
+    public Member getCurrentLoggedInMember() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = null;
+        if (authentication.getPrincipal() instanceof UserDetails) {
+            email = ((UserDetails) authentication.getPrincipal()).getUsername();
+        } else {
+            email = authentication.getPrincipal().toString();
+        }
+
         return memberRepository.findByEmail(email);
+
     }
+
+
 }

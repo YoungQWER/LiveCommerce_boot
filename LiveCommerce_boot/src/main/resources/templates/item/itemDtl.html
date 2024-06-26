@@ -102,11 +102,11 @@
         let stompClient = null;
 
         function connect() {
-            const socket = new SockJS('/chat');
+            const socket = new SockJS('/ws');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/messages', function(message) {
+                stompClient.subscribe('/sub/public', function(message) {
                     showMessage(JSON.parse(message.body));
                 });
             });
@@ -115,9 +115,9 @@
         function sendMessage() {
             const message = document.getElementById('message').value;
             const userId = document.getElementById('userId').value;  // 사용자 ID 입력 요소
-            stompClient.send("/app/sendMessage", {}, JSON.stringify({
-                'userId': userId,
-                'message': message
+            stompClient.send("/pub/chat.sendMessage", {}, JSON.stringify({
+                'sender': userId,
+                'content': message
             }));
             // 메시지 전송 후 입력창 초기화
             document.getElementById('message').value = '';
@@ -127,7 +127,7 @@
             const messageArea = document.getElementById('messageArea');
             const p = document.createElement('p');
             p.style.wordWrap = 'break-word';
-            p.textContent = message.userId + ": " + message.message;
+            p.textContent = message.sender + ": " + message.content;
             messageArea.appendChild(p);
             // 스크롤을 맨 아래로 이동
             messageArea.scrollTop = messageArea.scrollHeight;
@@ -137,7 +137,6 @@
             connect();
         };
     </script>
-
 </th:block>
 
 <!-- 사용자 CSS 추가 -->
@@ -271,7 +270,7 @@
         <div class="message-list" id="messageArea"></div>
         <div class="chat-input">
             <input type="text" id="message" placeholder="메시지를 입력하세요" />
-            <input type="hidden" id="userId" th:value="${#authentication.name}" /> <!-- 시튜리티 사용 -->
+            <input type="hidden" id="userId" th:value="${#authentication.name}" /> <!-- 시큐리티 사용 -->
             <button onclick="sendMessage()">전송</button>
         </div>
     </div>
@@ -306,5 +305,4 @@
     <img th:if="${not #strings.isEmpty(itemImg.imgUrl)}" th:src="${itemImg.imgUrl}" class="rounded mgb-15" width="800">
 </div>
 
-</div>
 </html>

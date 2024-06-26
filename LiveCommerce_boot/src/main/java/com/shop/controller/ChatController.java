@@ -1,47 +1,56 @@
 package com.shop.controller;
 
-import com.shop.dto.MessageDto;
+import com.shop.dto.ChatMessageDTO;
+import com.shop.entity.ChatMessage;
+import com.shop.entity.Item;
 import com.shop.entity.Member;
+import com.shop.service.ChatMessageService;
 import com.shop.service.MemberService;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.shop.service.ItemService;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Controller;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
-@Log4j2
 public class ChatController {
 
-    @Autowired
-    private MemberService memberService;
+    private final SimpMessagingTemplate messagingTemplate;
+    private final ChatMessageService chatMessageService;
+    private final MemberService memberService;
+    private final ItemService itemService;
 
-    @MessageMapping("/sendMessage")
-    @SendTo("/topic/messages")
-    public MessageDto sendMessage(@Payload MessageDto message) {
-        return message;
+    public ChatController(SimpMessagingTemplate messagingTemplate, ChatMessageService chatMessageService,
+                          MemberService memberService, ItemService itemService) {
+        this.messagingTemplate = messagingTemplate;
+        this.chatMessageService = chatMessageService;
+        this.memberService = memberService;
+        this.itemService = itemService;
     }
 
-    @GetMapping("/chat")
-    public String getChatPage(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String email = authentication.getName();
+    @MessageMapping("/chat.sendMessage")
+    public void sendMessage(@Payload ChatMessageDTO chatMessageDTO) {
+        Member sender = memberService.getCurrentLoggedInMember(); // 로그인된 멤버 정보 가져오기
+        Item item = itemService.getItemById(chatMessageDTO.getItemId()); // 상품 정보 가져오기
 
-        Member member = memberService.findByEmail(email);
-        if (member != null) {
-            model.addAttribute("currentUserName", member.getName());
-        } else {
-            model.addAttribute("currentUserName", "Unknown User");
-        }
+        ChatMessage chatMessage = new ChatMessage();
+        chatMessage.setSender(sender);
+        chatMessage.setItem(item);
+        chatMessage.setContent(chatMessageDTO.getContent());
+        chatMessage.setTimestamp(LocalDateTime.now());
 
-        log.info("--------------------email--------" , email);
-        log.info("currentUserName");
+        chatMessageService.saveMessage(chatMessage); // 채팅 메시지 저장
 
-        return "chat";
+        messagingTemplate.convertAndSend("/sub/public", chatMessage); // 클라이언트에게 메시지 전송
+    }
+
+    @MessageMapping("/chat.getMessages")
+    @SendTo("/sub/public")
+    public List<ChatMessage> getMessages(@Payload Long itemId) {
+        return chatMessageService.getMessagesByItemId(itemId);
     }
 }

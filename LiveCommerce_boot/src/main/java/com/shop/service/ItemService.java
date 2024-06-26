@@ -37,6 +37,15 @@ public class ItemService {
     private final FileService fileService;
 //    private final CategoryRepository categoryRepository;
 
+    // 상품 ID로 상품 조회
+    @Transactional(readOnly = true)
+    public Item getItemById(Long itemId) {
+        return itemRepository.findById(itemId)
+                .orElseThrow(() -> new EntityNotFoundException("Item not found with id: " + itemId));
+    }
+
+
+
     // 상품 저장
     public Long saveItem(ItemFormDto itemFormDto, List<MultipartFile> itemImgFileList) throws Exception {
         // 상품 엔티티 생성
@@ -153,4 +162,5 @@ public class ItemService {
 //        }
 //        return categoryDtos;
 //    }
+
 }
