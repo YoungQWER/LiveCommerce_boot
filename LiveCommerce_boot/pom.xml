@@ -37,6 +37,8 @@
             <optional>true</optional>
         </dependency>
 
+
+
         <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
         <dependency>
             <groupId>com.mysql</groupId>
@@ -121,6 +123,8 @@
 
     </dependencies>
 
+
+
     <build>
         <plugins>
             <plugin>
@@ -155,5 +159,7 @@
 
         </plugins>
     </build>
+
+
 
 </project>
