@@ -4,7 +4,6 @@ import lombok.extern.log4j.Log4j;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,28 +18,28 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
-                .mvcMatchers("/", "/members/**", "/item/**", "/images/**").permitAll()
-                .mvcMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/admin/notice/delete/{id}").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .formLogin()
-                .loginPage("/members/login")
-                .defaultSuccessUrl("/")
-                .usernameParameter("email")  // 로그인시 username으로 로그인 id일 때는 생략가능
-                .failureUrl("/members/login/error")
-                .and()
-                .logout()
-                .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
-                .logoutSuccessUrl("/")
-                .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(new CustomAuthticationEntryPoint())
-                .and()
-                .csrf().disable();
+        log.info("--------------------securityFilterChain----------------------------");
+
+        http.formLogin()
+                        .loginPage("/members/login")
+                        .defaultSuccessUrl("/")
+                        .usernameParameter("email")  //로그인시 username으로 로그인 id일 때는 생략가능
+                        .failureUrl("/members/login/error")
+                        .and()
+                        .logout()
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/members/logout"))
+                        .logoutSuccessUrl("/");
+
+        http.authorizeRequests()
+                        .mvcMatchers("/css/**", "/js/**", "/img/**").permitAll()
+                        .mvcMatchers("/", "/members/**", "/item/**", "/images/**").permitAll()
+                        .mvcMatchers("/admin/**").hasRole("ADMIN")
+                        .anyRequest().authenticated();
+
+        http.exceptionHandling()
+                        .authenticationEntryPoint(new CustomAuthticationEntryPoint());
+
+        http.csrf().disable();
 
         return http.build();
     }

@@ -22,5 +22,4 @@ public class Notice {
 
     private String author;
 
-
 }
