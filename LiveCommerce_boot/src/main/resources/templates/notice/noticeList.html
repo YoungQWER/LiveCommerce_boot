@@ -29,7 +29,7 @@
                     <p class="card-text" th:text="${notice.content}">내용 없음</p>
                     <p class="card-text"><small class="text-muted" th:text="'작성자: ' + ${notice.author}">작성자 없음</small></p>
                     <a class="btn btn-primary" th:href="@{/admin/notice/edit/{id}(id=${notice.id})}">수정</a>
-                    <form th:action="@{/admin/notice/delete/{id}(id=${notice.id})}" method="delete" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
+                    <form th:action="@{/admin/notice/delete/{id}(id=${notice.id})}" method="post" onsubmit="return confirm('정말로 삭제하시겠습니까?');">
                         <input type="hidden" name="_method" value="delete">
                         <button type="submit" class="btn btn-danger">삭제</button>
                     </form>
