@@ -157,7 +157,21 @@
             line-height: 1.6;
         }
     </style>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        function validateForm() {
+            var response = document.getElementById('response').value.trim();
+            if (response === '') {
+                alert('답변을 입력하세요.');
+                return false;
+            }
+            return true;
+        }
+        /*]]>*/
+    </script>
 </head>
+
 <body>
 <div layout:fragment="content">
     <h1 th:text="${inquiry.type}">문의 상세</h1>
@@ -176,13 +190,14 @@
             <!-- 각 답변을 반복하여 표시 -->
             <div th:each="response : ${responses}">
                 <div class="response">
-                    <p th:text="${response.content}">답변 내용이 여기에 표시됩니다.</p>
+                    <p th:text="'관리자 : ' + ${response.content}">답변 내용이 여기에 표시됩니다.</p>
                 </div>
             </div>
         </div>
 
         <!-- 답변 폼 -->
-        <form method="post" action="/responses" class="response-form" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">
+        <form method="post" action="/responses" class="response-form" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+              onsubmit="return validateForm();">
             <!-- inquiry_id hidden input -->
             <input type="hidden" name="inquiryId" th:value="${inquiry.id}" />
 
@@ -194,4 +209,5 @@
     </div>
 </div>
 </body>
+
 </html>
