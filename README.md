@@ -24,14 +24,15 @@
 - Library & Framework : `Spring Boot(2.7.1)` `Thymeleaf(3.0.0)` `jQuery`
 - Database : `MySQL(8.0.27)`
 - Target : `Web Browser`
-- Tool : `IntelliJ IDEA 2024.1.2` `Postman`
-- Infra : `Apache Tomcat`
+- Tool : `IntelliJ IDEA 2024.1.2`
 - Etc : `Git`
 
 ## 👾 프로젝트 설계, 구현 📂 PPT 📂 (ERD, USECASE)
 
 <details><summary>프로젝트 설계, 구현, PPT 눌러서 확인</summary>   
 <div align="center">   
+
+
 
 </div>            
 </details>
