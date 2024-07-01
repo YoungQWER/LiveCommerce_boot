@@ -1,4 +1,4 @@
-![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/d33f8670-2b5e-47c8-aad0-45ce4a8b9e64)![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/27509a07-357e-4ceb-9345-90686e587eea)<h1 align='center'> <img src='https://cdn-icons-png.flaticon.com/512/5208/5208370.png' style='width: 300px; height: 200px;'>&nbsp;</h1>
+<h1 align='center'> <img src='https://cdn-icons-png.flaticon.com/512/5208/5208370.png' style='width: 300px; height: 200px;'>&nbsp;</h1>
 <h1  align='center'>👕라이브 커머스 프로젝트</h1>
 
 
