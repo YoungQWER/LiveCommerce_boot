@@ -91,14 +91,14 @@
 ## 🎇 주요기능 실행화면
 
 <details>
-<summary> 눌러서 확인</summary>
+<summary> 실행화면 1 눌러서 확인</summary>
 
 ![1](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/7f747d12-f272-4d4a-b83a-0b65fa7d97c4)
 
 </details>
 
 <details>
-<summary> 눌러서 확인</summary>
+<summary> 실행화면 2 눌러서 확인</summary>
 
 ![2](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/c5947f15-1816-439e-ba7e-447fc7947d8c)
 
