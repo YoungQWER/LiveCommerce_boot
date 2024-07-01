@@ -170,6 +170,52 @@
             height: auto;
             width: 50%;
         }
+
+        /* 채팅 스타일 */
+        .chat-container {
+            border: 1px solid #ccc;
+            padding: 15px;
+            margin-left: 15px;
+            height: 400px;
+            overflow-y: auto;
+            width: 50%;
+        }
+
+        .chat-input {
+            margin-top: 10px;
+        }
+
+        .chat-input input {
+            width: calc(100% - 80px); /* 버튼 너비 고려하여 입력창 크기 조정 */
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .chat-input button {
+            width: 80px; /* 입력창과 버튼 너비 조정 */
+            padding: 10px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+
+        .message-list {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            height: 300px;
+            overflow-y: auto;
+        }
+
+        .message-list p {
+            margin: 5px 0;
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
     </style>
 </th:block>
 
@@ -219,6 +265,8 @@
             </div>
         </div>
     </div>
+
+
 
     <!-- 상품 상세 설명 -->
     <div class="jumbotron jumbotron-fluid mgt-30">
