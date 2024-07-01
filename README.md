@@ -32,11 +32,25 @@
 <details><summary>프로젝트 설계, 구현, PPT 눌러서 확인</summary>   
 <div align="center">   
 
-![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/498f7d9a-e7f9-4aa8-bcad-01c60f7c5ea2)
-![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/c182dd0f-4dff-4e6b-9d07-16f4acc1750a)
-![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/36b3468a-fba8-4e8d-aeb1-ea9785cbf9cd)
-![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/4e3dd66e-9f4c-4aea-968d-320fc0cc8487)
-![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/7aeed2cf-f368-4a2d-a054-fa3fe2ddde00)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/76785628-3126-4603-9450-6b408cde6f0a)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/d7a53e9e-a9b9-4d2d-a33b-9791538ed104)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/ab3cfe48-0852-4bbd-b25b-1d8ffd62e24b)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/cd9e3623-d76b-48b9-9949-631bf31a9f8a)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/a0351cbe-6bf7-4d7b-a5ba-22d86682719c)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/6525cd4f-da79-4c21-9f40-58a97296f95f)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/b2b0f010-a77a-44e3-b75b-3896e41bd6d6)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/e2e93cb9-dfa9-4b40-8239-49d7ee0e0bca)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/99d7b22b-22b9-46f2-917e-3e3265385638)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/a4d57fa0-83ba-4374-9487-2990cdfd714c)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/19d65652-8c46-4e2e-8e1d-a36df8e59773)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/45f3cab4-69f2-4fb9-b550-2f5755361225)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/909e3106-aade-4aef-ac73-b3a3cd21a09f)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/53178a4b-b233-4ef9-b20f-400bb51d7546)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/e3e8eb5e-c00b-4bde-8a4e-12afe35aa040)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/f975b6fd-9f13-401b-b4aa-3fdc73b0bbb0)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/7bc875fd-3156-4207-949e-0608e81d84cf)
+![image](https://github.com/YoungQWER/LiveCommerce_boot/assets/157094828/52c0bc1e-e464-4699-89d5-b511a110bda3)
+
 
 
 
